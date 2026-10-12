@@ -191,6 +191,9 @@ const listCard = s => {
 
 const GIFT = [["amazon-fresh","Amazon Fresh",2],["amazon-shopping","Amazon shopping",1.75],["amazon-pay","Amazon Pay",1.25]];
 const CARDS = [["icici-amazon-pay","Amazon Pay ICICI Card","5% / 3%",5],["sbi-card","Cashback SBI Card","5%",5],["standard-chartered","StanC Smart Credit Card","2%",2],["axis","Axis ACE Card","1.5%",1.5],[null,"YES Klick Card","1.5%",1.5]];
+// Variant: ?variant=no-save hides the green "Save ₹X more" button on the other-store cards
+const NO_SAVE = new URLSearchParams(location.search).get("variant") === "no-save";
+if (NO_SAVE) document.title = "Results light v3 (no Save button) · Save8";
 // Offer-style card for "Also found on other stores" (Figma 64:2403): product, store button, gift card + payment offer rails
 const offerTile = (img, name, label, arrow) => `<div class="tile"><div class="top"><img src="${A}logos/${img}" alt=""><span>${name}</span></div>
   <div class="bot"><span class="pct">${label} Off</span>${arrow ? `<span class="arrow">${ic("card-offer-arrow",12)}</span>` : `<button class="buy">Buy</button>`}</div></div>`;
@@ -208,6 +211,7 @@ const offerCard = s => {
       ${price}
     </div>
     ${cta}
+    ${NO_SAVE ? "" : `<button class="sv" data-open="other:${s.n}">${s.sv} ${ic("chevron-right",12)}</button>`}
     <div class="sec"><span>Gift Card Offers</span>${ic("chevron-right",16)}</div>
     <div class="rail">${[GIFT[1], GIFT[0], GIFT[2]].map(([f,n,r]) => offerTile(`gift-cards/${f}.png`, n, r + "%")).join("")}</div>
     <div class="sec"><span>Payment Offers</span><span class="lnk">Add Cards ${ic("chevron-right",14)}</span></div>
